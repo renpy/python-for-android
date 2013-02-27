@@ -45,6 +45,7 @@
 #include <GLES2/gl2.h>
 
 #define ATTRIB_VERTEX 0
+#define ATTRIB_TEXCOORD 1
 
 #if defined(__QNXNTO__)
 /* Include QNX system header to check QNX version later */
@@ -385,20 +386,36 @@ GLES_ActivateRenderer(SDL_Renderer * renderer)
     GLES_vbox_bottom = vheight + y_padding / 2.0;
     GLES_pwidth = pwidth;
     GLES_pheight = pheight;
+
+
     
     if (data->updateSize) {
 
+    	GLfloat ortho_matrix[] = {
+    			2 / (GLES_vbox_right - GLES_vbox_left), 0, 0, -(GLES_vbox_right + GLES_vbox_left)/(GLES_vbox_right - GLES_vbox_left),
+    			0, 2 / (GLES_vbox_top - GLES_vbox_bottom), 0, -(GLES_vbox_top + GLES_vbox_bottom)/(GLES_vbox_top - GLES_vbox_bottom),
+    			0, 0, -2 / 1, -1,
+    			0, 0, 0, 1
+    	};
+
     	GLchar *vertex_code =
     			"precision highp float;"
+    			"uniform mat4 xform;"
     			"attribute vec2 vertex;"
+    			"attribute vec2 texcoord;"
+    			"varying vec2 f_texcoord;"
     			"void main(void) {"
-    			"   gl_Position = vec4(vertex, 0, 1.0);"
+    			"   gl_Position = vec4(vertex, 0, 1.0) * xform;"
+    			"   f_texcoord = texcoord;"
     			"}";
 
     	GLchar *fragment_code =
     			"precision highp float;"
+    			"varying vec2 pos;"
+    			"varying vec2 f_texcoord;"
+    			"uniform sampler2D tex;"
     			"void main(void) {"
-    			"    gl_FragColor = vec4(1.0, 0.0, 1.0, 0.0);"
+    			"    gl_FragColor = texture2D(tex, f_texcoord);"
     			"}";
 
     	GLuint vertex_shader, fragment_shader, program;
@@ -414,6 +431,7 @@ GLES_ActivateRenderer(SDL_Renderer * renderer)
     	program = glCreateProgram();
 
     	glBindAttribLocation(program, ATTRIB_VERTEX, "vertex");
+    	glBindAttribLocation(program, ATTRIB_TEXCOORD, "texcoord");
 
     	glAttachShader(program, vertex_shader);
     	glAttachShader(program, fragment_shader);
@@ -421,11 +439,25 @@ GLES_ActivateRenderer(SDL_Renderer * renderer)
 
     	glUseProgram(program);
 
+    	glUniformMatrix4fv(
+    			glGetUniformLocation(program, "xform"),
+    			1,
+    			GL_FALSE,
+    			ortho_matrix);
+
+    	glUniform1i(
+    			glGetUniformLocation(program, "tex"),
+    			0);
+
+    	glViewport(0, 0, pwidth, pheight);
+
+    	__android_log_print(ANDROID_LOG_INFO, "libSDL", "pwidth %d pheight %d", pwidth, pheight);
+
         glClearColor(0.0, 0.0, 0.0, 1.0);
         glClear(GL_COLOR_BUFFER_BIT);
                  
 /* #if SDL_VIDEO_RENDER_RESIZE */
-/*         __android_log_print(ANDROID_LOG_INFO, "libSDL", "GLES_ActivateRenderer(): %dx%d", (int)window->display->desktop_mode.w, (int)window->display->desktop_mode.h); */
+        /*         __android_log_print(ANDROID_LOG_INFO, "libSDL", "GLES_ActivateRenderer(): %dx%d", (int)window->display->desktop_mode.w, (int)window->display->desktop_mode.h); */
 /*         glViewport(0, 0, window->display->desktop_mode.w, window->display->desktop_mode.h); */
 /*         glOrthof(0.0, (GLfloat) window->display->desktop_mode.w, (GLfloat) window->display->desktop_mode.h, */
 /*                        0.0, 0.0, 1.0); */
@@ -859,8 +891,6 @@ GLES_RenderCopy(SDL_Renderer * renderer, SDL_Texture * texture,
 	maxx = dstrect->x + dstrect->w;
 	maxy = dstrect->y + dstrect->h;
 
-	// __android_log_print(ANDROID_LOG_ERROR, "sdl", "coords %d %d %d %d", minx, miny, maxx, maxy);
-
 	minu = (GLfloat) srcrect->x / texture->w;
 	minu *= texturedata->texw;
 	maxu = (GLfloat) (srcrect->x + srcrect->w) / texture->w;
@@ -893,6 +923,9 @@ GLES_RenderCopy(SDL_Renderer * renderer, SDL_Texture * texture,
 
 	glEnableVertexAttribArray(ATTRIB_VERTEX);
 	glVertexAttribPointer(ATTRIB_VERTEX, 2, GL_SHORT, GL_FALSE, 0, vertices);
+
+	glEnableVertexAttribArray(ATTRIB_TEXCOORD);
+	glVertexAttribPointer(ATTRIB_TEXCOORD, 2, GL_FLOAT, GL_FALSE, 0, texCoords);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
 //        glVertexPointer(2, GL_SHORT, 0, vertices);
