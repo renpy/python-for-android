@@ -12,3 +12,5 @@ testsuite
 #ECLIPSE + PYDEV
 .project
 .pydevproject
+src/libs/
+.packages
