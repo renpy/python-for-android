@@ -106,6 +106,9 @@ def quit():
 def periodic():
     return
 
+def needs_alloc():
+    return False
+
 def alloc_event(surf):
     return
 

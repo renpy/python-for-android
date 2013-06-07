@@ -144,9 +144,14 @@ void android_sound_playing_name(int channel, char *buf, int buflen) {
         env, cls, mid,
         channel);
 
-    jbuf = (*env)->GetStringUTFChars(env, s, NULL);
-    strncpy(buf, jbuf, buflen);
-    (*env)->ReleaseStringUTFChars(env, s, jbuf);
+    // Catch errors.
+    if (s < (jobject) 0x100) {
+    	buf[0] = 0;
+    } else {
+		jbuf = (*env)->GetStringUTFChars(env, s, NULL);
+		strncpy(buf, jbuf, buflen);
+		(*env)->ReleaseStringUTFChars(env, s, jbuf);
+    }
 
     POP_FRAME;
 }
