@@ -1,10 +1,12 @@
 #@PydevCodeAnalysisIgnore
 import android.core
 import android.apk
+import os
 
 from android.core import *
 
-assets = android.apk.APK()
+expansion = os.environ.get("ANDROID_EXPANSION", None)
+assets = android.apk.APK(apk=expansion)
 
 # Web browser support.
 class AndroidBrowser(object):
