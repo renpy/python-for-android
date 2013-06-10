@@ -1,8 +1,8 @@
 #!/bin/bash
 
 VERSION_renpy=6.15.0
-URL_pygame=
-DEPS_pygame=(pygame)
+URL_renpy=
+DEPS_renpy=(pygame)
 MD5_renpy=
 BUILD_renpy=$BUILD_PATH/renpy/
 RECIPE_renpy=$RECIPES_PATH/renpy
