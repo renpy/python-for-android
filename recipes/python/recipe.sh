@@ -30,6 +30,10 @@ function prebuild_python() {
 	try patch -p1 < $RECIPE_python/patches/fix-remove-corefoundation.patch
 	try patch -p1 < $RECIPE_python/patches/fix-dynamic-lookup.patch
 
+        # Bugfix required to deal with corrupt APKs produced by the
+        # Amazon App Store.
+	try patch -p1 < $RECIPE_python/patches/fix-zipfile-extra.patch
+
 	system=$(uname -s)
 	if [ "X$system" == "XDarwin" ]; then
 		try patch -p1 < $RECIPE_python/patches/fix-configure-darwin.patch
