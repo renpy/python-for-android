@@ -84,10 +84,10 @@ def set_volume(channel, volume):
     android_sound_set_volume(channel, volume)
     volumes[channel] = volume
     
-def set_secondary_volume(channel, volume):
+def set_secondary_volume(channel, volume, delay=None):
     android_sound_set_secondary_volume(channel, volume)
 
-def set_pan(channel, pan):
+def set_pan(channel, pan, delay=None):
     android_sound_set_pan(channel, pan)
 
 def set_end_event(channel, event):
