@@ -23,7 +23,7 @@ SDL_TRACKBALL_KEYUP_DELAY := 1
 # resized in HW-accelerated way, however it eats a tiny bit of CPU
 SDL_VIDEO_RENDER_RESIZE := 0
 
-COMPILED_LIBRARIES := sdl_ttf sdl_image sdl_mixer
+COMPILED_LIBRARIES := sdl_ttf sdl_image 
 
 APPLICATION_ADDITIONAL_CFLAGS := -finline-functions -O2
 
