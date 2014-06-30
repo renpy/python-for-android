@@ -17,7 +17,7 @@ function strip_renpy() {
     rm -f "$1"/*.rpym
     rm -f "$1"/*.so.o
     rm -f "$1"/*.so.libs
-    
+
 }
 
 
@@ -30,7 +30,7 @@ function build_renpy() {
 	# try cd "$RENPYROOT"
 	# ./run.sh the_question compile
 	try cd "$RENPYROOT/module"
-			
+
 	push_arm
 
     CFLAGS="$CFLAGS -DANDROID"
@@ -39,9 +39,9 @@ function build_renpy() {
 	export CFLAGS="$CFLAGS"
 	export LDFLAGS="$LDFLAGS -L$LIBS_PATH -L$SRC_PATH/obj/local/$ARCH/ -lm -lz"
 	export LDSHARED="$LIBLINK"
-    try $BUILD_PATH/python-install/bin/python.host setup.py clean -b build/lib.android -t build/tmp.android 
-    try $BUILD_PATH/python-install/bin/python.host setup.py build_ext -b build/lib.android -t build/tmp.android 
-	
+    try $BUILD_PATH/python-install/bin/python.host setup.py clean -b build/lib.android -t build/tmp.android
+    try $BUILD_PATH/python-install/bin/python.host setup.py build_ext -b build/lib.android -t build/tmp.android
+
     unset LDSHARED
 
 	pop_arm
@@ -49,11 +49,11 @@ function build_renpy() {
     #site-packages
     SP="$BUILD_PATH/python-install/lib/python2.7/site-packages"
     B="$RENPYROOT/module/build/lib.android"
-    
-    try cp -a "$RENPYROOT/renpy" "$SP"
+
+    # try cp -a "$RENPYROOT/renpy" "$SP"
     try cp -a "$B"/* "$SP"
 
-    try rm -Rf "$SP/renpy/common"
+    # try rm -Rf "$SP/renpy/common"
 
     strip_renpy "$SP/renpy"
 	strip_renpy "$SP/renpy"
