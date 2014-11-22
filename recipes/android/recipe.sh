@@ -29,7 +29,7 @@ function build_android() {
 	if [ -f .done ]; then
 		return
 	fi
-	
+
 	push_arm
 
 	export LDFLAGS="$LDFLAGS -L$LIBS_PATH"

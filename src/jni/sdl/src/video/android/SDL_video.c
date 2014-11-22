@@ -44,11 +44,11 @@
 #endif
 #ifdef ANDROID
 #include <android/log.h>
+#include <GLES2/gl2.h>
+#define SDL_VIDEO_OPENGLES
 #endif
 
-#if SDL_VIDEO_OPENGL_ES
-#include "SDL_opengles.h"
-#endif /* SDL_VIDEO_OPENGL_ES */
+
 
 #if SDL_VIDEO_OPENGL
 #include "SDL_opengl.h"
@@ -3162,7 +3162,7 @@ SDL_bool
 SDL_GL_ExtensionSupported(const char *extension)
 {
 #if SDL_VIDEO_OPENGL || SDL_VIDEO_OPENGL_ES
-    const GLubyte *(APIENTRY * glGetStringFunc) (GLenum);
+    const GLubyte *(* glGetStringFunc) (GLenum);
     const char *extensions;
     const char *start;
     const char *where, *terminator;

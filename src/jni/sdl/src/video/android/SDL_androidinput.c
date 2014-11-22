@@ -54,7 +54,7 @@ extern float GLES_vbox_bottom;
 extern float GLES_pwidth;
 extern float GLES_pheight;
 
-JNIEXPORT void JNICALL 
+JNIEXPORT void JNICALL
 JAVA_EXPORT_NAME(SDLSurfaceView_nativeMouse) ( JNIEnv*  env, jobject  thiz, jint x, jint y, jint action, jint pointerId, jint force, jint radius )
 {
 	if(pointerId < 0)
@@ -66,14 +66,14 @@ JAVA_EXPORT_NAME(SDLSurfaceView_nativeMouse) ( JNIEnv*  env, jobject  thiz, jint
         // return;
 
         if (GLES_pwidth != 0.0) {
-        
+
             float ix = 1.0 * x / GLES_pwidth;
             float iy = 1.0 * y / GLES_pheight;
 
             x = (int) (GLES_vbox_left + ix * (GLES_vbox_right - GLES_vbox_left));
             y = (int) (GLES_vbox_top + iy * (GLES_vbox_bottom - GLES_vbox_top));
         }
-            
+
 #if SDL_VIDEO_RENDER_RESIZE
 	// Translate mouse coordinates
 
@@ -127,20 +127,16 @@ JAVA_EXPORT_NAME(SDLSurfaceView_nativeMouse) ( JNIEnv*  env, jobject  thiz, jint
 		SDL_SendMouseMotion(NULL, 0, x, y);
 #else
 
-        
+
 		SDL_PrivateMouseMotion(0, 0, x, y);
 #endif
-        }
-                
-        if (action == MOUSE_UP) {
-            SDL_PrivateMouseMotion(0, 0, -4096, -4096);
         }
 
 }
 
 static int processAndroidTrackball(int key, int action);
 
-JNIEXPORT jboolean JNICALL 
+JNIEXPORT jboolean JNICALL
 JAVA_EXPORT_NAME(SDLSurfaceView_nativeKey) ( JNIEnv*  env, jobject thiz, jint key, jint action, jint unicode )
 {
 	if( isTrackballUsed )
@@ -153,7 +149,7 @@ JAVA_EXPORT_NAME(SDLSurfaceView_nativeKey) ( JNIEnv*  env, jobject thiz, jint ke
 
         if (ks->sym == KEYCODE_UNKNOWN) {
             return 0;
-        } else {                   
+        } else {
             SDL_SendKeyboardKey( action ? SDL_PRESSED : SDL_RELEASED, ks);
             return 1;
         }
@@ -169,7 +165,7 @@ void SDL_ANDROID_MapKey(int scancode, int keysym) {
 
 static void updateOrientation ( float accX, float accY, float accZ );
 
-JNIEXPORT void JNICALL 
+JNIEXPORT void JNICALL
 JAVA_EXPORT_NAME(SDLSurfaceView_nativeAccelerometer) ( JNIEnv*  env, jobject  thiz, jfloat accPosX, jfloat accPosY, jfloat accPosZ )
 {
 	// Calculate two angles from three coordinates - TODO: this is faulty!
@@ -178,36 +174,36 @@ JAVA_EXPORT_NAME(SDLSurfaceView_nativeAccelerometer) ( JNIEnv*  env, jobject  th
 	float normal = sqrt(accPosX*accPosX+accPosY*accPosY+accPosZ*accPosZ);
 	if(normal <= 0.0000001f)
 		normal = 1.0f;
-	
+
 	updateOrientation (accPosX/normal, accPosY/normal, 0.0f);
 }
 
 
-JNIEXPORT void JNICALL 
+JNIEXPORT void JNICALL
 JAVA_EXPORT_NAME(SDLSurfaceView_nativeOrientation) ( JNIEnv*  env, jobject  thiz, jfloat accX, jfloat accY, jfloat accZ )
 {
 	updateOrientation (accX, accY, accZ);
 }
 
-JNIEXPORT void JNICALL 
+JNIEXPORT void JNICALL
 JAVA_EXPORT_NAME(SDLSurfaceView_nativeSetTrackballUsed) ( JNIEnv*  env, jobject thiz)
 {
 	isTrackballUsed = 1;
 }
 
-JNIEXPORT void JNICALL 
+JNIEXPORT void JNICALL
 JAVA_EXPORT_NAME(SDLSurfaceView_nativeSetMouseUsed) ( JNIEnv*  env, jobject thiz)
 {
 	isMouseUsed = 1;
 }
 
-JNIEXPORT void JNICALL 
+JNIEXPORT void JNICALL
 JAVA_EXPORT_NAME(SDLSurfaceView_nativeSetJoystickUsed) ( JNIEnv*  env, jobject thiz)
 {
 	isJoystickUsed = 1;
 }
 
-JNIEXPORT void JNICALL 
+JNIEXPORT void JNICALL
 JAVA_EXPORT_NAME(SDLSurfaceView_nativeSetMultitouchUsed) ( JNIEnv*  env, jobject thiz)
 {
 	isMultitouchUsed = 1;
@@ -218,7 +214,7 @@ void ANDROID_InitOSKeymap()
   int i;
   SDLKey * keymap = SDL_android_keymap;
 
-  
+
 #if (SDL_VERSION_ATLEAST(1,3,0))
   SDLKey defaultKeymap[SDL_NUM_SCANCODES];
   SDL_GetDefaultKeymap(defaultKeymap);
@@ -234,7 +230,7 @@ void ANDROID_InitOSKeymap()
 
   //keymap[KEYCODE_CALL] = SDL_KEY(RCTRL);
   //keymap[KEYCODE_DPAD_CENTER] = SDL_KEY(LALT);
-  
+
   keymap[KEYCODE_0] = SDL_KEY(0);
   keymap[KEYCODE_1] = SDL_KEY(1);
   keymap[KEYCODE_2] = SDL_KEY(2);
@@ -253,7 +249,7 @@ void ANDROID_InitOSKeymap()
   keymap[KEYCODE_DPAD_LEFT] = SDL_KEY(LEFT);
   keymap[KEYCODE_DPAD_RIGHT] = SDL_KEY(RIGHT);
   keymap[KEYCODE_DPAD_CENTER] = SDL_KEY(RETURN);
-  
+
   keymap[KEYCODE_ENTER] = SDL_KEY(RETURN); //SDL_KEY(KP_ENTER);
 
   keymap[KEYCODE_CLEAR] = SDL_KEY(BACKSPACE);
@@ -305,7 +301,7 @@ void ANDROID_InitOSKeymap()
 
 static float dx = 0.04, dy = 0.1, dz = 0.1; // For accelerometer
 
-JNIEXPORT void JNICALL 
+JNIEXPORT void JNICALL
 JAVA_EXPORT_NAME(SDLSurfaceView_nativeSetAccelerometerSensitivity) ( JNIEnv*  env, jobject thiz, jint value)
 {
 	dx = 0.04; dy = 0.08; dz = 0.08; // Fast sensitivity
@@ -319,7 +315,7 @@ JAVA_EXPORT_NAME(SDLSurfaceView_nativeSetAccelerometerSensitivity) ( JNIEnv*  en
 	}
 }
 
-JNIEXPORT void JNICALL 
+JNIEXPORT void JNICALL
 JAVA_EXPORT_NAME(SDLSurfaceView_nativeSetTrackballDampening) ( JNIEnv*  env, jobject thiz, jint value)
 {
 	TrackballDampening = (value * 200);
@@ -332,9 +328,9 @@ void updateOrientation ( float accX, float accY, float accZ )
 
 	static float midX = 0, midY = 0, midZ = 0;
 	static int pressLeft = 0, pressRight = 0, pressUp = 0, pressDown = 0, pressR = 0, pressL = 0;
-	
+
 	midX = 0.0f; // Do not remember old value for phone tilt, it feels weird
-	
+
 	if( isJoystickUsed && CurrentJoysticks[0] ) // TODO: mutex for that stuff?
 	{
 		// TODO: fix coefficients
@@ -353,7 +349,7 @@ void updateOrientation ( float accX, float accY, float accZ )
 		return;
 	}
 
-	
+
 	if( accX < midX - dx )
 	{
 		if( !pressLeft )
@@ -483,7 +479,7 @@ static int leftPressed = 0, rightPressed = 0, upPressed = 0, downPressed = 0;
 int processAndroidTrackball(int key, int action)
 {
 	SDL_keysym keysym;
-	
+
 	if( ! action && (
 		key == KEYCODE_DPAD_UP ||
 		key == KEYCODE_DPAD_DOWN ||

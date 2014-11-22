@@ -67,7 +67,6 @@ int SDL_ANDROID_CallJavaSwapBuffers()
 {
     int rv;
 
-    SDL_ANDROID_drawTouchscreenKeyboard();
     SDL_ANDROID_processAndroidTrackballDampening();
         
     rv = (*JavaEnv)->CallIntMethod( JavaEnv, JavaRenderer, JavaSwapBuffers );

@@ -5,7 +5,7 @@ build
 src/obj
 src/local.properties
 src/default.properties
-src/libs/armeabi
+src/libs
 dist
 *.pyc
 testsuite
@@ -14,7 +14,7 @@ testsuite
 #ECLIPSE + PYDEV
 .project
 .pydevproject
-
 .deps
-
 .optional-deps
+
+

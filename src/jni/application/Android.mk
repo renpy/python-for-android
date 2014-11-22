@@ -34,7 +34,7 @@ LOCAL_SHARED_LIBRARIES := sdl $(COMPILED_LIBRARIES)
 
 LOCAL_STATIC_LIBRARIES := jpeg png
 
-LOCAL_LDLIBS := -lpython2.7 -lGLESv1_CM -ldl -llog -lz
+LOCAL_LDLIBS := -lpython2.7 -ldl -llog -lz
 
 LOCAL_LDFLAGS += -L$(LOCAL_PATH)/../../../build/python-install/lib $(APPLICATION_ADDITIONAL_LDFLAGS)
 
