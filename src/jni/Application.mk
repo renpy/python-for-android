@@ -5,7 +5,7 @@ APP_PROJECT_PATH := $(call my-dir)/..
 # sdl_image depends on png and jpeg
 # sdl_ttf depends on freetype
 
-APP_MODULES := SDL2 application png jpeg freetype 
+APP_MODULES := SDL2 png SDL2_image SDL2_gfx freetype application 
 
 APP_ABI := $(ARCH)
 APP_STL := gnustl_static
