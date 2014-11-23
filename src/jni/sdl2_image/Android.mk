@@ -16,7 +16,7 @@ PNG_LIBRARY_PATH := external/libpng-1.6.2
 
 # Enable this if you want to support loading WebP images
 # The library path should be a relative path to this directory.
-SUPPORT_WEBP := true
+SUPPORT_WEBP := false
 WEBP_LIBRARY_PATH := external/libwebp-0.3.0
 
 
@@ -29,7 +29,7 @@ LOCAL_SRC_FILES := $(notdir $(filter-out %/showimage.c, $(wildcard $(LOCAL_PATH)
 
 LOCAL_LDLIBS :=
 LOCAL_STATIC_LIBRARIES :=
-LOCAL_SHARED_LIBRARIES := SDL2
+LOCAL_SHARED_LIBRARIES := png SDL2
 
 ifeq ($(SUPPORT_JPG),true)
     LOCAL_C_INCLUDES += $(LOCAL_PATH)/$(JPG_LIBRARY_PATH)
@@ -91,22 +91,23 @@ ifeq ($(SUPPORT_PNG),true)
     LOCAL_CFLAGS += -DLOAD_PNG
     # We can include the sources directly so the user doesn't have to...
     #LOCAL_STATIC_LIBRARIES += png
-    LOCAL_SRC_FILES += \
-        $(PNG_LIBRARY_PATH)/png.c \
-        $(PNG_LIBRARY_PATH)/pngerror.c \
-        $(PNG_LIBRARY_PATH)/pngget.c \
-        $(PNG_LIBRARY_PATH)/pngmem.c \
-        $(PNG_LIBRARY_PATH)/pngpread.c \
-        $(PNG_LIBRARY_PATH)/pngread.c \
-        $(PNG_LIBRARY_PATH)/pngrio.c \
-        $(PNG_LIBRARY_PATH)/pngrtran.c \
-        $(PNG_LIBRARY_PATH)/pngrutil.c \
-        $(PNG_LIBRARY_PATH)/pngset.c \
-        $(PNG_LIBRARY_PATH)/pngtrans.c \
-        $(PNG_LIBRARY_PATH)/pngwio.c \
-        $(PNG_LIBRARY_PATH)/pngwrite.c \
-        $(PNG_LIBRARY_PATH)/pngwtran.c \
-        $(PNG_LIBRARY_PATH)/pngwutil.c
+    #LOCAL_SHARED_LIBRARIES += png
+#    LOCAL_SRC_FILES += \
+#        $(PNG_LIBRARY_PATH)/png.c \
+#        $(PNG_LIBRARY_PATH)/pngerror.c \
+#        $(PNG_LIBRARY_PATH)/pngget.c \
+#        $(PNG_LIBRARY_PATH)/pngmem.c \
+#        $(PNG_LIBRARY_PATH)/pngpread.c \
+#        $(PNG_LIBRARY_PATH)/pngread.c \
+#        $(PNG_LIBRARY_PATH)/pngrio.c \
+#        $(PNG_LIBRARY_PATH)/pngrtran.c \
+#        $(PNG_LIBRARY_PATH)/pngrutil.c \
+#        $(PNG_LIBRARY_PATH)/pngset.c \
+#        $(PNG_LIBRARY_PATH)/pngtrans.c \
+#        $(PNG_LIBRARY_PATH)/pngwio.c \
+#        $(PNG_LIBRARY_PATH)/pngwrite.c \
+#        $(PNG_LIBRARY_PATH)/pngwtran.c \
+#        $(PNG_LIBRARY_PATH)/pngwutil.c
     LOCAL_LDLIBS += -lz
 endif
 
