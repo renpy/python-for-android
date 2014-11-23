@@ -5,5 +5,5 @@ import os
 import android.apk as apk
 
 expansion = os.environ.get("ANDROID_EXPANSION", None)
-assets = android.apk.APK(apk=expansion)
+assets = apk.APK(apk=expansion)
 
