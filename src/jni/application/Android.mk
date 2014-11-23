@@ -7,16 +7,6 @@ LOCAL_MODULE := application
 APP_SUBDIRS := $(patsubst $(LOCAL_PATH)/%, %, $(shell find $(LOCAL_PATH)/src/ -type d))
 
 LOCAL_CFLAGS := $(foreach D, $(APP_SUBDIRS), -I$(LOCAL_PATH)/$(D)) \
-				-I$(LOCAL_PATH)/../sdl/include \
-				-I$(LOCAL_PATH)/../sdl_mixer \
-				-I$(LOCAL_PATH)/../sdl_image \
-				-I$(LOCAL_PATH)/../sdl_ttf \
-				-I$(LOCAL_PATH)/../sdl_net \
-				-I$(LOCAL_PATH)/../sdl_blitpool \
-				-I$(LOCAL_PATH)/../sdl_gfx \
-				-I$(LOCAL_PATH)/../png \
-				-I$(LOCAL_PATH)/../jpeg \
-				-I$(LOCAL_PATH)/../intl \
 				-I$(LOCAL_PATH)/.. \
 				-I$(LOCAL_PATH)/../../../build/python-install/include/python2.7
 
@@ -30,9 +20,9 @@ LOCAL_SRC_FILES := $(foreach F, $(APP_SUBDIRS), $(addprefix $(F)/,$(notdir $(wil
 # Uncomment to also add C sources
 LOCAL_SRC_FILES += $(foreach F, $(APP_SUBDIRS), $(addprefix $(F)/,$(notdir $(wildcard $(LOCAL_PATH)/$(F)/*.c))))
 
-LOCAL_SHARED_LIBRARIES := sdl $(COMPILED_LIBRARIES)
+LOCAL_SHARED_LIBRARIES := SDL2 jpeg png $(COMPILED_LIBRARIES)
 
-LOCAL_STATIC_LIBRARIES := jpeg png
+LOCAL_STATIC_LIBRARIES := 
 
 LOCAL_LDLIBS := -lpython2.7 -ldl -llog -lz
 

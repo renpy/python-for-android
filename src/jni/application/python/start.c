@@ -8,7 +8,6 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <jni.h>
-#include "SDL.h"
 #include "android/log.h"
 #include "jniwrapperstuff.h"
 
