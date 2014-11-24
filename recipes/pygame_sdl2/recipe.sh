@@ -37,9 +37,10 @@ function build_pygame_sdl2() {
 	export LDSHARED="$LIBLINK"
 
 	export PYGAME_SDL2_EXCLUDE="pygame_sdl2.mixer pygame_sdl2.mixer_music"
+    export PYGAME_SDL2_INSTALL_HEADERS=1
 
 	rm -R build/lib.android build/tmp.android
-    try $BUILD_PATH/python-install/bin/python.host setup.py build_ext -b build/lib.android -t build/tmp.android
+    try $BUILD_PATH/python-install/bin/python.host setup.py build_ext -b build/lib.android -t build/tmp.android install --prefix "$BUILD_PATH/python-install/"
 
     unset LDSHARED
 
