@@ -1,8 +1,8 @@
 #!/bin/bash
 
-VERSION_renpy=6.15.0
+VERSION_renpy=6.19.0
 URL_renpy=
-DEPS_renpy=(pygame)
+DEPS_renpy=(pygame_sdl2)
 MD5_renpy=
 BUILD_renpy=$BUILD_PATH/renpy/
 RECIPE_renpy=$RECIPES_PATH/renpy
@@ -20,7 +20,6 @@ function strip_renpy() {
 
 }
 
-
 function prebuild_renpy() {
     true
 }
@@ -33,9 +32,7 @@ function build_renpy() {
 
 	push_arm
 
-    CFLAGS="$CFLAGS -DANDROID"
-	CFLAGS="$CFLAGS -I$JNI_PATH/sdl/include"
-	CFLAGS="$CFLAGS -I$JNI_PATH/png -I$JNI_PATH/freetype/include"
+    CFLAGS="$CFLAGS -DANDROID -I$JNI_PATH/sdl2/include -I$JNI_PATH/sdl2_image -I$JNI_PATH/png -I$JNI_PATH/freetype/include"
 	export CFLAGS="$CFLAGS"
 	export LDFLAGS="$LDFLAGS -L$LIBS_PATH -L$SRC_PATH/obj/local/$ARCH/ -lm -lz"
 	export LDSHARED="$LIBLINK"
