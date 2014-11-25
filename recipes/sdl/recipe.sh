@@ -12,9 +12,10 @@ function prebuild_sdl() {
 }
 
 function shouldbuild_sdl() {
-	if [ -f "$LIBS_PATH/libsdl.so" ]; then
-		DO_BUILD=0
-	fi
+    true
+	# if [ -f "$LIBS_PATH/libsdl.so" ]; then
+		#	DO_BUILD=0
+	# fi
 }
 
 function build_sdl() {

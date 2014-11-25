@@ -9,7 +9,7 @@ setup(name='android',
 
         Extension(
             'android._android', ['android/_android.c', 'android/_android_jni.c'],
-            libraries=[ 'sdl', 'log' ],
+            libraries=[ 'log' ],
             library_dirs=[ 'libs/' + os.environ['ARCH'] ],
             ),
         Extension(
@@ -19,7 +19,7 @@ setup(name='android',
             ),
         Extension(
             'android._android_sound', ['android/_android_sound.c', 'android/_android_sound_jni.c',],
-            libraries=[ 'sdl', 'log' ],
+            libraries=[ 'log' ],
             library_dirs=[ 'libs/' + os.environ['ARCH'] ],
             ),
 

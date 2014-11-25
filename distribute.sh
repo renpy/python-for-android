@@ -223,7 +223,7 @@ function push_arm() {
 
 	export CC="$TOOLCHAIN_PREFIX-gcc $CFLAGS"
 	export CXX="$TOOLCHAIN_PREFIX-g++ $CXXFLAGS"
-	export AR="$TOOLCHAIN_PREFIX-ar" 
+	export AR="$TOOLCHAIN_PREFIX-ar"
 	export RANLIB="$TOOLCHAIN_PREFIX-ranlib"
 	export LD="$TOOLCHAIN_PREFIX-ld"
 	export STRIP="$TOOLCHAIN_PREFIX-strip --strip-unneeded"
@@ -258,7 +258,7 @@ function pop_arm() {
 
 function usage() {
 	echo "Python for android - distribute.sh"
-	echo 
+	echo
 	echo "Usage:   ./distribute.sh [options]"
 	echo
 	echo "  -d directory           Name of the distribution directory"
@@ -744,7 +744,7 @@ function run_pymodules_install() {
 			exit -1
 		fi
 	done
-	
+
 	debug "Check if virtualenv is existing"
 	if [ ! -d venv ]; then
 		debug "Installing virtualenv"
@@ -795,7 +795,7 @@ function run_distribute() {
 	debug "Fill private directory"
 	try cp -a python-install/lib private/
 	try mkdir -p private/include/python2.7
-	
+
 	if [ "$COPYLIBS" == "1" ]; then
 		if [ -s "libs/$ARCH/copylibs" ]; then
 			try sh -c "cat libs/$ARCH/copylibs | xargs -d'\n' cp -t private/"

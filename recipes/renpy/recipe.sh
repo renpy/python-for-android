@@ -2,7 +2,7 @@
 
 VERSION_renpy=6.19.0
 URL_renpy=
-DEPS_renpy=(pygame_sdl2)
+DEPS_renpy=(pygame_sdl2 sdl python)
 MD5_renpy=
 BUILD_renpy=$BUILD_PATH/renpy/
 RECIPE_renpy=$RECIPES_PATH/renpy

@@ -2,7 +2,7 @@
 
 VERSION_pygame_sdl2=1.0
 URL_pygame_sdl2=
-DEPS_pygame_sdl2=(sdl)
+DEPS_pygame_sdl2=(sdl python)
 MD5_pygame_sdl2=
 BUILD_pygame_sdl2=$BUILD_PATH/pygame_sdl2/
 RECIPE_pygame_sdl2=$RECIPES_PATH/pygame_sdl2
