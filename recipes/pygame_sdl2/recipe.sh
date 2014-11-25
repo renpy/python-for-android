@@ -32,6 +32,7 @@ function build_pygame_sdl2() {
 	push_arm
 
     CFLAGS="$CFLAGS -DANDROID -I$JNI_PATH/sdl2/include -I$JNI_PATH/sdl2_image -I$JNI_PATH/sdl2_gfx -I$JNI_PATH/sdl2_ttf -I$JNI_PATH/png -I$JNI_PATH/freetype/include"
+
 	export CFLAGS="$CFLAGS"
 	export LDFLAGS="$LDFLAGS -L$LIBS_PATH -L$SRC_PATH/obj/local/$ARCH/ -lm -lz"
 	export LDSHARED="$LIBLINK"
