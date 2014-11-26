@@ -17,18 +17,11 @@ function prebuild_android() {
 }
 
 function shouldbuild_android() {
-	if [ -d "$SITEPACKAGES_PATH/android" ]; then
-		DO_BUILD=0
-	fi
+    true
 }
 
 function build_android() {
 	cd $BUILD_android
-
-	# if the last step have been done, avoid all
-	if [ -f .done ]; then
-		return
-	fi
 
 	push_arm
 
@@ -42,7 +35,6 @@ function build_android() {
 
 	unset LDSHARED
 
-	touch .done
 	pop_arm
 }
 

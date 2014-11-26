@@ -1,19 +1,19 @@
 # Android-specific python services.
 
-cdef extern int SDL_ANDROID_CheckPause()
-cdef extern void SDL_ANDROID_WaitForResume() nogil
-cdef extern void SDL_ANDROID_MapKey(int scancode, int keysym)
-
-def check_pause():
-    return SDL_ANDROID_CheckPause()
-
-def wait_for_resume():
-    android_accelerometer_enable(False)
-    SDL_ANDROID_WaitForResume()
-    android_accelerometer_enable(accelerometer_enabled)
-
-def map_key(scancode, keysym):
-    SDL_ANDROID_MapKey(scancode, keysym)
+# cdef extern int SDL_ANDROID_CheckPause()
+# cdef extern void SDL_ANDROID_WaitForResume() nogil
+# cdef extern void SDL_ANDROID_MapKey(int scancode, int keysym)
+#
+# def check_pause():
+#     return SDL_ANDROID_CheckPause()
+#
+# def wait_for_resume():
+#     android_accelerometer_enable(False)
+#     SDL_ANDROID_WaitForResume()
+#     android_accelerometer_enable(accelerometer_enabled)
+#
+# def map_key(scancode, keysym):
+#     SDL_ANDROID_MapKey(scancode, keysym)
 
 # Android keycodes.
 KEYCODE_UNKNOWN         = 0

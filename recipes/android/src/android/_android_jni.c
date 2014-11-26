@@ -4,7 +4,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-JNIEnv *SDL_ANDROID_GetJNIEnv(void);
+void *SDL_AndroidGetJNIEnv(void);
 
 #define aassert(x) { if (!x) { __android_log_print(ANDROID_LOG_ERROR, "android_jni", "Assertion failed. %s:%d", __FILE__, __LINE__); abort(); }}
 #define PUSH_FRAME { (*env)->PushLocalFrame(env, 16); }
@@ -16,7 +16,7 @@ void android_vibrate(double seconds) {
     static jmethodID mid = NULL;
 
     if (env == NULL) {
-        env = SDL_ANDROID_GetJNIEnv();
+        env = (JNIEnv *) SDL_AndroidGetJNIEnv();
         aassert(env);
         cls = (*env)->FindClass(env, "org/renpy/android/Hardware");
         aassert(cls);
@@ -35,7 +35,7 @@ void android_accelerometer_enable(int enable) {
     static jmethodID mid = NULL;
 
     if (env == NULL) {
-        env = SDL_ANDROID_GetJNIEnv();
+        env = (JNIEnv *) SDL_AndroidGetJNIEnv();
         aassert(env);
         cls = (*env)->FindClass(env, "org/renpy/android/Hardware");
         aassert(cls);
@@ -54,7 +54,7 @@ void android_wifi_scanner_enable(void){
     static jmethodID mid = NULL;
 
     if (env == NULL) {
-        env = SDL_ANDROID_GetJNIEnv();
+        env = (JNIEnv *) SDL_AndroidGetJNIEnv();
         aassert(env);
         cls = (*env)->FindClass(env, "org/renpy/android/Hardware");
         aassert(cls);
@@ -73,7 +73,7 @@ char * android_wifi_scan() {
     jobject jreading;
 
     if (env == NULL) {
-        env = SDL_ANDROID_GetJNIEnv();
+        env = (JNIEnv *) SDL_AndroidGetJNIEnv();
         aassert(env);
         cls = (*env)->FindClass(env, "org/renpy/android/Hardware");
         aassert(cls);
@@ -96,7 +96,7 @@ void android_accelerometer_reading(float *values) {
     jobject jvalues;
 
     if (env == NULL) {
-        env = SDL_ANDROID_GetJNIEnv();
+        env = (JNIEnv *) SDL_AndroidGetJNIEnv();
         aassert(env);
         cls = (*env)->FindClass(env, "org/renpy/android/Hardware");
         aassert(cls);
@@ -118,7 +118,7 @@ int android_get_dpi(void) {
     static jmethodID mid = NULL;
 
     if (env == NULL) {
-        env = SDL_ANDROID_GetJNIEnv();
+        env = (JNIEnv *) SDL_AndroidGetJNIEnv();
         aassert(env);
         cls = (*env)->FindClass(env, "org/renpy/android/Hardware");
         aassert(cls);
@@ -135,7 +135,7 @@ void android_show_keyboard(int input_type) {
     static jmethodID mid = NULL;
 
     if (env == NULL) {
-        env = SDL_ANDROID_GetJNIEnv();
+        env = (JNIEnv *) SDL_AndroidGetJNIEnv();
         aassert(env);
         cls = (*env)->FindClass(env, "org/renpy/android/Hardware");
         aassert(cls);
@@ -152,7 +152,7 @@ void android_hide_keyboard(void) {
     static jmethodID mid = NULL;
 
     if (env == NULL) {
-        env = SDL_ANDROID_GetJNIEnv();
+        env = (JNIEnv *) SDL_AndroidGetJNIEnv();
         aassert(env);
         cls = (*env)->FindClass(env, "org/renpy/android/Hardware");
         aassert(cls);
@@ -176,7 +176,7 @@ void android_get_buildinfo() {
         jfieldID fid;
         jstring sval;
 
-        env = SDL_ANDROID_GetJNIEnv();
+        env = (JNIEnv *) SDL_AndroidGetJNIEnv();
         aassert(env);
 
         cls = (*env)->FindClass(env, "android/os/Build");
@@ -207,7 +207,7 @@ void android_activate_input(void) {
     static jmethodID mid = NULL;
 
     if (env == NULL) {
-        env = SDL_ANDROID_GetJNIEnv();
+        env = (JNIEnv *) SDL_AndroidGetJNIEnv();
         aassert(env);
         cls = (*env)->FindClass(env, "org/renpy/android/SDLSurfaceView");
         aassert(cls);
@@ -224,7 +224,7 @@ int android_checkstop(void) {
     static jmethodID mid = NULL;
 
     if (env == NULL) {
-        env = SDL_ANDROID_GetJNIEnv();
+        env = (JNIEnv *) SDL_AndroidGetJNIEnv();
         aassert(env);
         cls = (*env)->FindClass(env, "org/renpy/android/SDLSurfaceView");
         aassert(cls);
@@ -241,7 +241,7 @@ void android_ackstop(void) {
     static jmethodID mid = NULL;
 
     if (env == NULL) {
-        env = SDL_ANDROID_GetJNIEnv();
+        env = (JNIEnv *) SDL_AndroidGetJNIEnv();
         aassert(env);
         cls = (*env)->FindClass(env, "org/renpy/android/SDLSurfaceView");
         aassert(cls);
@@ -258,7 +258,7 @@ void android_action_send(char *mimeType, char *filename, char *subject, char *te
     static jmethodID mid = NULL;
 
     if (env == NULL) {
-        env = SDL_ANDROID_GetJNIEnv();
+        env = (JNIEnv *) SDL_AndroidGetJNIEnv();
         aassert(env);
         cls = (*env)->FindClass(env, "org/renpy/android/Action");
         aassert(cls);
@@ -293,7 +293,7 @@ void android_open_url(char *url) {
     static jmethodID mid = NULL;
 
     if (env == NULL) {
-        env = SDL_ANDROID_GetJNIEnv();
+        env = (JNIEnv *) SDL_AndroidGetJNIEnv();
         aassert(env);
         cls = (*env)->FindClass(env, "org/renpy/android/SDLSurfaceView");
         aassert(cls);
@@ -317,7 +317,7 @@ void android_start_service(char *title, char *description, char *arg) {
     static jmethodID mid = NULL;
 
     if (env == NULL) {
-        env = SDL_ANDROID_GetJNIEnv();
+        env = (JNIEnv *) SDL_AndroidGetJNIEnv();
         aassert(env);
         cls = (*env)->FindClass(env, "org/renpy/android/PythonActivity");
         aassert(cls);
@@ -345,7 +345,7 @@ void android_stop_service() {
     static jmethodID mid = NULL;
 
     if (env == NULL) {
-        env = SDL_ANDROID_GetJNIEnv();
+        env = (JNIEnv *) SDL_AndroidGetJNIEnv();
         cls = (*env)->FindClass(env, "org/renpy/android/PythonActivity");
         aassert(cls);
         mid = (*env)->GetStaticMethodID(env, cls, "stop_service", "()V");
