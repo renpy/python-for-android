@@ -68,6 +68,8 @@ function shouldbuild_python() {
 		fi
 	fi
 
+    # DO_BUILD=1
+
 	echo "$req" > "$reqfn"
 }
 
@@ -108,10 +110,12 @@ function build_python() {
 	# check if we can avoid this part.
 
 	debug 'First install (failing..)'
-	$MAKE install HOSTPYTHON=$BUILD_python/hostpython HOSTPGEN=$BUILD_python/hostpgen CROSS_COMPILE_TARGET=yes INSTSONAME=libpython2.7.so
+	$MAKE HOSTPYTHON=$BUILD_python/hostpython HOSTPGEN=$BUILD_python/hostpgen CROSS_COMPILE_TARGET=yes INSTSONAME=libpython2.7.so
 	debug 'Second install.'
 	touch python.exe python
-	$MAKE install HOSTPYTHON=$BUILD_python/hostpython HOSTPGEN=$BUILD_python/hostpgen CROSS_COMPILE_TARGET=yes INSTSONAME=libpython2.7.so
+    $MAKE HOSTPYTHON=$BUILD_python/hostpython HOSTPGEN=$BUILD_python/hostpgen CROSS_COMPILE_TARGET=yes INSTSONAME=libpython2.7.so
+    $MAKE install HOSTPYTHON=$BUILD_python/hostpython HOSTPGEN=$BUILD_python/hostpgen CROSS_COMPILE_TARGET=yes INSTSONAME=libpython2.7.so >/dev/null 2>/dev/null
+
 	pop_arm
 
 	system=$(uname -s)
