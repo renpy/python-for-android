@@ -6,7 +6,7 @@
 
 void *SDL_AndroidGetJNIEnv(void);
 
-#define aassert(x) { if (!x) { __android_log_print(ANDROID_LOG_ERROR, "android_jni", "Assertion failed. %s:%d", __FILE__, __LINE__); abort(); }}
+#define aassert(x) { if (!x) { __android_log_print(ANDROID_LOG_ERROR, "python", "Assertion failed. %s:%d", __FILE__, __LINE__); abort(); }}
 #define PUSH_FRAME { (*env)->PushLocalFrame(env, 16); }
 #define POP_FRAME  { (*env)->PopLocalFrame(env, NULL); }
 

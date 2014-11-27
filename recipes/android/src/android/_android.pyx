@@ -1,12 +1,3 @@
-def init():
-    pass
-
-# Vibration support.
-cdef extern void android_vibrate(double)
-
-def vibrate(s):
-    android_vibrate(s)
-
 # DisplayMetrics information.
 cdef extern int android_get_dpi()
 
