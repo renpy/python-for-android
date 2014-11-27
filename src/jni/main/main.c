@@ -195,7 +195,7 @@ int SDL_main(int argc, char **argv) {
 	window = SDL_CreateWindow("pygame_sdl2 starting...", 0, 0, 800, 600, SDL_WINDOW_SHOWN);
 	surface = SDL_GetWindowSurface(window);
 
-	SDL_FillRect(surface, NULL, SDL_MapRGB(surface->format, 0, 255, 0));
+	SDL_FillRect(surface, NULL, SDL_MapRGB(surface->format, 0, 0, 255));
 	SDL_UpdateWindowSurface(window);
 
 	call_prepare_python();
