@@ -7,6 +7,9 @@
 #include "android/log.h"
 #include "jniwrapperstuff.h"
 
+SDL_Window *window = NULL;
+
+
 #define LOG(x) __android_log_write(ANDROID_LOG_INFO, "python", (x))
 
 static PyObject *androidembed_log(PyObject *self, PyObject *args) {
@@ -18,9 +21,23 @@ static PyObject *androidembed_log(PyObject *self, PyObject *args) {
     Py_RETURN_NONE;
 }
 
+static PyObject *androidembed_close_window(PyObject *self, PyObject *args) {
+    char *logstr = NULL;
+    if (!PyArg_ParseTuple(args, "")) {
+        return NULL;
+    }
+
+    if (window) {
+		SDL_DestroyWindow(window);
+		window = NULL;
+    }
+
+    Py_RETURN_NONE;
+}
+
 static PyMethodDef AndroidEmbedMethods[] = {
-    {"log", androidembed_log, METH_VARARGS,
-     "Log on android platform"},
+	    {"log", androidembed_log, METH_VARARGS, "Log on android platform."},
+	    {"close_window", androidembed_close_window, METH_VARARGS, "Close the initial window."},
     {NULL, NULL, 0, NULL}
 };
 
@@ -90,8 +107,14 @@ int start_python(void) {
         "        return\n" \
         "sys.stdout = sys.stderr = LogFile()\n" \
 		"import site; print site.getsitepackages()\n"\
+		"print '3...'\n"\
+		"print '2...'\n"\
+		"print '1...'\n"\
 		"print 'Android path', sys.path\n" \
-        "print 'Android bootstrap done. __name__ is', __name__");
+        "print 'Android bootstrap done. __name__ is', __name__\n"\
+		"import pygame_sdl2\n"\
+		"pygame_sdl2.import_as_pygame()\n"\
+    	"");
 
     /* run it !
      */
@@ -162,7 +185,6 @@ void call_prepare_python(void) {
 }
 
 int SDL_main(int argc, char **argv) {
-	SDL_Window *window;
 	SDL_Surface *surface;
 	SDL_Event event;
 
@@ -170,7 +192,7 @@ int SDL_main(int argc, char **argv) {
 		return 1;
 	}
 
-	window = SDL_CreateWindow("Android Test", 0, 0, 800, 600, SDL_WINDOW_SHOWN);
+	window = SDL_CreateWindow("pygame_sdl2 starting...", 0, 0, 800, 600, SDL_WINDOW_SHOWN);
 	surface = SDL_GetWindowSurface(window);
 
 	SDL_FillRect(surface, NULL, SDL_MapRGB(surface->format, 0, 255, 0));
