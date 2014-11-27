@@ -800,9 +800,9 @@ function run_distribute() {
 		if [ -s "libs/$ARCH/copylibs" ]; then
 			try sh -c "cat libs/$ARCH/copylibs | xargs -d'\n' cp -t private/"
 		fi
-	else
-		try mv libs/$ARCH/libpymodules.so private/
-	fi
+    fi
+	#		try mv libs/$ARCH/libpymodules.so private/
+	#fi
 	try cp python-install/include/python2.7/pyconfig.h private/include/python2.7/
 
 	debug "Reduce private directory from unwanted files"
