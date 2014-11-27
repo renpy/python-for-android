@@ -10,42 +10,6 @@ void *SDL_AndroidGetJNIEnv(void);
 #define PUSH_FRAME { (*env)->PushLocalFrame(env, 16); }
 #define POP_FRAME  { (*env)->PopLocalFrame(env, NULL); }
 
-void android_vibrate(double seconds) {
-    static JNIEnv *env = NULL;
-    static jclass *cls = NULL;
-    static jmethodID mid = NULL;
-
-    if (env == NULL) {
-        env = (JNIEnv *) SDL_AndroidGetJNIEnv();
-        aassert(env);
-        cls = (*env)->FindClass(env, "org/renpy/android/Hardware");
-        aassert(cls);
-        mid = (*env)->GetStaticMethodID(env, cls, "vibrate", "(D)V");
-        aassert(mid);
-    }
-
-    (*env)->CallStaticVoidMethod(
-        env, cls, mid,
-        (jdouble) seconds);
-}
-
-int android_get_dpi(void) {
-    static JNIEnv *env = NULL;
-    static jclass *cls = NULL;
-    static jmethodID mid = NULL;
-
-    if (env == NULL) {
-        env = (JNIEnv *) SDL_AndroidGetJNIEnv();
-        aassert(env);
-        cls = (*env)->FindClass(env, "org/renpy/android/Hardware");
-        aassert(cls);
-        mid = (*env)->GetStaticMethodID(env, cls, "getDPI", "()I");
-        aassert(mid);
-    }
-
-    return (*env)->CallStaticIntMethod(env, cls, mid);
-}
-
 char* BUILD_MANUFACTURER = NULL;
 char* BUILD_MODEL = NULL;
 char* BUILD_PRODUCT = NULL;
@@ -119,21 +83,4 @@ void android_action_send(char *mimeType, char *filename, char *subject, char *te
 		j_chooser_title);
 }
 
-void android_open_url(char *url) {
-
-	JNIEnv* env = (JNIEnv*) SDL_AndroidGetJNIEnv();
-	jobject activity = (jobject) SDL_AndroidGetActivity();
-	jclass clazz = (*env)->GetObjectClass(env, activity);
-	jmethodID method_id = (*env)->GetMethodID(env, clazz, "openUrl", "(Ljava/lang/String;)V");
-
-	PUSH_FRAME;
-
-	(*env)->CallVoidMethod(env, activity, method_id, (*env)->NewStringUTF(env, url));
-
-    POP_FRAME;
-
-	(*env)->DeleteLocalRef(env, activity);
-	(*env)->DeleteLocalRef(env, clazz);
-
-}
 

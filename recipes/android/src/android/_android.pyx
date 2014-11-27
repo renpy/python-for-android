@@ -1,9 +1,3 @@
-# DisplayMetrics information.
-cdef extern int android_get_dpi()
-
-def get_dpi():
-    return android_get_dpi()
-
 # Build info.
 cdef extern char* BUILD_MANUFACTURER
 cdef extern char* BUILD_MODEL
@@ -46,22 +40,4 @@ def action_send(mimetype, filename=None, subject=None, text=None,
         j_chooser_title = <bytes>chooser_title
     android_action_send(j_mimetype, j_filename, j_subject, j_text,
             j_chooser_title)
-
-# -------------------------------------------------------------------
-# URL Opening.
-cdef extern void android_open_url(char *url)
-def open_url(url):
-    android_open_url(url)
-
-# Web browser support.
-class AndroidBrowser(object):
-    def open(self, url, new=0, autoraise=True):
-        open_url(url)
-    def open_new(self, url):
-        open_url(url)
-    def open_new_tab(self, url):
-        open_url(url)
-
-import webbrowser
-webbrowser.register('android', AndroidBrowser, None, -1)
 
