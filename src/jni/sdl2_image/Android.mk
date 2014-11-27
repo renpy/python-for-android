@@ -29,7 +29,7 @@ LOCAL_SRC_FILES := $(notdir $(filter-out %/showimage.c, $(wildcard $(LOCAL_PATH)
 
 LOCAL_LDLIBS :=
 LOCAL_STATIC_LIBRARIES :=
-LOCAL_SHARED_LIBRARIES := png14 SDL2
+LOCAL_SHARED_LIBRARIES := png16 SDL2
 
 ifeq ($(SUPPORT_JPG),true)
     LOCAL_C_INCLUDES += $(LOCAL_PATH)/$(JPG_LIBRARY_PATH)
@@ -87,7 +87,7 @@ ifeq ($(SUPPORT_JPG),true)
 endif
 
 ifeq ($(SUPPORT_PNG),true)
-    LOCAL_C_INCLUDES += $(LOCAL_PATH)/$(PNG_LIBRARY_PATH)
+    LOCAL_C_INCLUDES += $(LOCAL_PATH)/../png
     LOCAL_CFLAGS += -DLOAD_PNG
     # We can include the sources directly so the user doesn't have to...
     #LOCAL_STATIC_LIBRARIES += png
