@@ -1,4 +1,5 @@
 #include "SDL.h"
+#include "SDL_image.h"
 #include "Python.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -184,18 +185,81 @@ void call_prepare_python(void) {
 	(*env)->DeleteLocalRef(env, clazz);
 }
 
+Uint32 getpixel(SDL_Surface *surface, int x, int y) {
+    int bpp = surface->format->BytesPerPixel;
+
+    Uint8 *p = (Uint8 *)surface->pixels + y * surface->pitch + x * bpp;
+
+    switch(bpp) {
+    case 1:
+        return *p;
+        break;
+
+    case 2:
+        return *(Uint16 *)p;
+        break;
+
+    case 3:
+        if(SDL_BYTEORDER == SDL_BIG_ENDIAN)
+            return p[0] << 16 | p[1] << 8 | p[2];
+        else
+            return p[0] | p[1] << 8 | p[2] << 16;
+        break;
+
+    case 4:
+        return *(Uint32 *)p;
+        break;
+
+    default:
+        return 0;       /* shouldn't happen, but avoids warnings */
+    }
+}
+
 int SDL_main(int argc, char **argv) {
 	SDL_Surface *surface;
-	SDL_Event event;
+	SDL_RWops *rwops = NULL;
+	SDL_Surface *presplash = NULL;;
+	SDL_Rect pos;
+	Uint32 pixel;
+
+	int display_width = 1024;
+	int display_height = 768;
+	SDL_DisplayMode mode;
 
 	if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
 		return 1;
 	}
 
-	window = SDL_CreateWindow("pygame_sdl2 starting...", 0, 0, 800, 600, SDL_WINDOW_SHOWN);
-	surface = SDL_GetWindowSurface(window);
+	IMG_Init(IMG_INIT_JPG|IMG_INIT_PNG);
 
-	SDL_FillRect(surface, NULL, SDL_MapRGB(surface->format, 0, 0, 255));
+	if (SDL_GetCurrentDisplayMode(0, &mode) == 0) {
+		display_width = mode.w;
+		display_height = mode.h;
+	}
+
+	window = SDL_CreateWindow("pygame_sdl2 starting...", 0, 0, display_width, display_height, SDL_WINDOW_SHOWN);
+	surface = SDL_GetWindowSurface(window);
+	pixel = SDL_MapRGB(surface->format, 128, 128, 128);
+
+	rwops = SDL_RWFromFile("android-presplash.jpg", "r");
+	if (!rwops) goto done;
+
+	presplash = IMG_Load_RW(rwops, 1);
+	if (!presplash) goto done;
+
+	pixel = getpixel(presplash, 0, 0);
+
+done:
+
+	SDL_FillRect(surface, NULL, pixel);
+
+	if (presplash) {
+		pos.x = (display_width - presplash->w) / 2;
+		pos.y = (display_height - presplash->h) / 2;
+		SDL_BlitSurface(presplash, NULL, surface, &pos);
+		SDL_FreeSurface(presplash);
+	}
+
 	SDL_UpdateWindowSurface(window);
 
 	call_prepare_python();
