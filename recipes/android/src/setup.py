@@ -17,11 +17,11 @@ setup(name='android',
 #             libraries=[ 'log' ],
 #             library_dirs=[ 'libs/' + os.environ['ARCH'] ],
 #             ),
-        Extension(
-            'android._android_sound', ['android/_android_sound.c', 'android/_android_sound_jni.c',],
-            libraries=[ 'log' ],
-            library_dirs=[ 'libs/' + os.environ['ARCH'] ],
-            ),
+#         Extension(
+#             'android._android_sound', ['android/_android_sound.c', 'android/_android_sound_jni.c',],
+#             libraries=[ 'log' ],
+#             library_dirs=[ 'libs/' + os.environ['ARCH'] ],
+#             ),
 
         ]
       )
