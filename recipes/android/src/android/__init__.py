@@ -27,6 +27,9 @@ def get_dpi():
 def open_url(url):
     activity.openUrl(url)
 
+def wakelock(active):
+    activity.setWakeLock(active)
+
 # Web browser support.
 class AndroidBrowser(object):
     def open(self, url, new=0, autoraise=True):
