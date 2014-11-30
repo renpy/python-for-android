@@ -185,40 +185,11 @@ void call_prepare_python(void) {
 	(*env)->DeleteLocalRef(env, clazz);
 }
 
-Uint32 getpixel(SDL_Surface *surface, int x, int y) {
-    int bpp = surface->format->BytesPerPixel;
-
-    Uint8 *p = (Uint8 *)surface->pixels + y * surface->pitch + x * bpp;
-
-    switch(bpp) {
-    case 1:
-        return *p;
-        break;
-
-    case 2:
-        return *(Uint16 *)p;
-        break;
-
-    case 3:
-        if(SDL_BYTEORDER == SDL_BIG_ENDIAN)
-            return p[0] << 16 | p[1] << 8 | p[2];
-        else
-            return p[0] | p[1] << 8 | p[2] << 16;
-        break;
-
-    case 4:
-        return *(Uint32 *)p;
-        break;
-
-    default:
-        return 0;       /* shouldn't happen, but avoids warnings */
-    }
-}
-
 int SDL_main(int argc, char **argv) {
 	SDL_Surface *surface;
 	SDL_RWops *rwops = NULL;
-	SDL_Surface *presplash = NULL;;
+	SDL_Surface *presplash = NULL;
+	SDL_Surface *presplash2 = NULL;
 	SDL_Rect pos;
 	Uint32 pixel;
 
@@ -247,7 +218,16 @@ int SDL_main(int argc, char **argv) {
 	presplash = IMG_Load_RW(rwops, 1);
 	if (!presplash) goto done;
 
-	pixel = getpixel(presplash, 0, 0);
+	presplash2 = SDL_ConvertSurfaceFormat(presplash, SDL_PIXELFORMAT_RGB888, 0);
+	Uint8 *pp = (Uint8 *) presplash2->pixels;
+
+#if SDL_BYTEORDER == SDL_LIL_ENDIAN
+	pixel = SDL_MapRGB(surface->format, pp[2], pp[1], pp[0]);
+#else
+	pixel = SDL_MapRGB(surface->format, pp[0], pp[1], pp[2]);
+#endif
+
+	SDL_FreeSurface(presplash2);
 
 done:
 
