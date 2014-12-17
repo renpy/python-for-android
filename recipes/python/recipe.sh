@@ -49,6 +49,8 @@ function prebuild_python() {
 function shouldbuild_python() {
 	cd $BUILD_python
 
+ DO_BUILD=1
+
 	# check if the requirements for python changed (with/without openssl or sqlite3)
 	reqfn=".req"
 	req=""
@@ -68,7 +70,7 @@ function shouldbuild_python() {
 		fi
 	fi
 
-    # DO_BUILD=1
+  # DO_BUILD=1
 
 	echo "$req" > "$reqfn"
 }
@@ -99,7 +101,6 @@ function build_python() {
 	fi
 
 	try ./configure --host=arm-eabi OPT=$OFLAG --prefix="$BUILD_PATH/python-install" --enable-shared --disable-toolbox-glue --disable-framework
-	echo ./configure --host=arm-eabi  OPT=$OFLAG --prefix="$BUILD_PATH/python-install" --enable-shared --disable-toolbox-glue --disable-framework
 	echo $MAKE HOSTPYTHON=$BUILD_python/hostpython HOSTPGEN=$BUILD_python/hostpgen CROSS_COMPILE_TARGET=yes INSTSONAME=libpython2.7.so
 	cp HOSTPYTHON=$BUILD_python/hostpython python
 
@@ -109,12 +110,13 @@ function build_python() {
 	# because at this time, python is arm, not x86. even that, why /usr/include/netinet/in.h is used ?
 	# check if we can avoid this part.
 
-	debug 'First install (failing..)'
-	$MAKE HOSTPYTHON=$BUILD_python/hostpython HOSTPGEN=$BUILD_python/hostpgen CROSS_COMPILE_TARGET=yes INSTSONAME=libpython2.7.so
-	debug 'Second install.'
-	touch python.exe python
-    $MAKE HOSTPYTHON=$BUILD_python/hostpython HOSTPGEN=$BUILD_python/hostpgen CROSS_COMPILE_TARGET=yes INSTSONAME=libpython2.7.so
-    $MAKE install HOSTPYTHON=$BUILD_python/hostpython HOSTPGEN=$BUILD_python/hostpgen CROSS_COMPILE_TARGET=yes INSTSONAME=libpython2.7.so
+  debug "Android build."
+  try mkdir -p Lib/plat-linux3
+	try $MAKE install HOSTPYTHON=$BUILD_python/hostpython HOSTPGEN=$BUILD_python/hostpgen CROSS_COMPILE_TARGET=yes INSTSONAME=libpython2.7.so
+	# debug 'Second install.'
+	# touch python.exe python
+  # $MAKE HOSTPYTHON=$BUILD_python/hostpython HOSTPGEN=$BUILD_python/hostpgen CROSS_COMPILE_TARGET=yes INSTSONAME=libpython2.7.so
+  # try $MAKE install HOSTPYTHON=$BUILD_python/hostpython HOSTPGEN=$BUILD_python/hostpgen CROSS_COMPILE_TARGET=yes INSTSONAME=libpython2.7.so
 
 	pop_arm
 
