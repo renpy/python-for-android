@@ -29,61 +29,61 @@ LOCAL_SRC_FILES := $(notdir $(filter-out %/showimage.c, $(wildcard $(LOCAL_PATH)
 
 LOCAL_LDLIBS :=
 LOCAL_STATIC_LIBRARIES :=
-LOCAL_SHARED_LIBRARIES := png16 SDL2
+LOCAL_SHARED_LIBRARIES := png16 jpeg SDL2
 
 ifeq ($(SUPPORT_JPG),true)
-    LOCAL_C_INCLUDES += $(LOCAL_PATH)/$(JPG_LIBRARY_PATH)
+    LOCAL_C_INCLUDES +=  $(LOCAL_PATH)/../jpeg
     LOCAL_CFLAGS += -DLOAD_JPG
     # We can include the sources directly so the user doesn't have to...
     #LOCAL_STATIC_LIBRARIES += jpeg
     LOCAL_CFLAGS += -DAVOID_TABLES
-    LOCAL_SRC_FILES += \
-        $(JPG_LIBRARY_PATH)/jaricom.c \
-        $(JPG_LIBRARY_PATH)/jcapimin.c \
-        $(JPG_LIBRARY_PATH)/jcapistd.c \
-        $(JPG_LIBRARY_PATH)/jcarith.c \
-        $(JPG_LIBRARY_PATH)/jccoefct.c \
-        $(JPG_LIBRARY_PATH)/jccolor.c \
-        $(JPG_LIBRARY_PATH)/jcdctmgr.c \
-        $(JPG_LIBRARY_PATH)/jchuff.c \
-        $(JPG_LIBRARY_PATH)/jcinit.c \
-        $(JPG_LIBRARY_PATH)/jcmainct.c \
-        $(JPG_LIBRARY_PATH)/jcmarker.c \
-        $(JPG_LIBRARY_PATH)/jcmaster.c \
-        $(JPG_LIBRARY_PATH)/jcomapi.c \
-        $(JPG_LIBRARY_PATH)/jcparam.c \
-        $(JPG_LIBRARY_PATH)/jcprepct.c \
-        $(JPG_LIBRARY_PATH)/jcsample.c \
-        $(JPG_LIBRARY_PATH)/jctrans.c \
-        $(JPG_LIBRARY_PATH)/jdapimin.c \
-        $(JPG_LIBRARY_PATH)/jdapistd.c \
-        $(JPG_LIBRARY_PATH)/jdarith.c \
-        $(JPG_LIBRARY_PATH)/jdatadst.c \
-        $(JPG_LIBRARY_PATH)/jdatasrc.c \
-        $(JPG_LIBRARY_PATH)/jdcoefct.c \
-        $(JPG_LIBRARY_PATH)/jdcolor.c \
-        $(JPG_LIBRARY_PATH)/jddctmgr.c \
-        $(JPG_LIBRARY_PATH)/jdhuff.c \
-        $(JPG_LIBRARY_PATH)/jdinput.c \
-        $(JPG_LIBRARY_PATH)/jdmainct.c \
-        $(JPG_LIBRARY_PATH)/jdmarker.c \
-        $(JPG_LIBRARY_PATH)/jdmaster.c \
-        $(JPG_LIBRARY_PATH)/jdmerge.c \
-        $(JPG_LIBRARY_PATH)/jdpostct.c \
-        $(JPG_LIBRARY_PATH)/jdsample.c \
-        $(JPG_LIBRARY_PATH)/jdtrans.c \
-        $(JPG_LIBRARY_PATH)/jerror.c \
-        $(JPG_LIBRARY_PATH)/jfdctflt.c \
-        $(JPG_LIBRARY_PATH)/jfdctfst.c \
-        $(JPG_LIBRARY_PATH)/jfdctint.c \
-        $(JPG_LIBRARY_PATH)/jidctflt.c \
-        $(JPG_LIBRARY_PATH)/jidctfst.S \
-        $(JPG_LIBRARY_PATH)/jidctint.c \
-        $(JPG_LIBRARY_PATH)/jquant1.c \
-        $(JPG_LIBRARY_PATH)/jquant2.c \
-        $(JPG_LIBRARY_PATH)/jutils.c \
-        $(JPG_LIBRARY_PATH)/jmemmgr.c \
-        $(JPG_LIBRARY_PATH)/jmem-android.c
+#    LOCAL_SRC_FILES += \
+#        $(JPG_LIBRARY_PATH)/jaricom.c \
+#        $(JPG_LIBRARY_PATH)/jcapimin.c \
+#        $(JPG_LIBRARY_PATH)/jcapistd.c \
+#        $(JPG_LIBRARY_PATH)/jcarith.c \
+#        $(JPG_LIBRARY_PATH)/jccoefct.c \
+#        $(JPG_LIBRARY_PATH)/jccolor.c \
+#        $(JPG_LIBRARY_PATH)/jcdctmgr.c \
+#        $(JPG_LIBRARY_PATH)/jchuff.c \
+#        $(JPG_LIBRARY_PATH)/jcinit.c \
+#        $(JPG_LIBRARY_PATH)/jcmainct.c \
+#        $(JPG_LIBRARY_PATH)/jcmarker.c \
+#        $(JPG_LIBRARY_PATH)/jcmaster.c \
+#        $(JPG_LIBRARY_PATH)/jcomapi.c \
+#        $(JPG_LIBRARY_PATH)/jcparam.c \
+#        $(JPG_LIBRARY_PATH)/jcprepct.c \
+#        $(JPG_LIBRARY_PATH)/jcsample.c \
+#        $(JPG_LIBRARY_PATH)/jctrans.c \
+#        $(JPG_LIBRARY_PATH)/jdapimin.c \
+#        $(JPG_LIBRARY_PATH)/jdapistd.c \
+#        $(JPG_LIBRARY_PATH)/jdarith.c \
+#        $(JPG_LIBRARY_PATH)/jdatadst.c \
+#        $(JPG_LIBRARY_PATH)/jdatasrc.c \
+#        $(JPG_LIBRARY_PATH)/jdcoefct.c \
+#        $(JPG_LIBRARY_PATH)/jdcolor.c \
+#        $(JPG_LIBRARY_PATH)/jddctmgr.c \
+#        $(JPG_LIBRARY_PATH)/jdhuff.c \
+#        $(JPG_LIBRARY_PATH)/jdinput.c \
+#        $(JPG_LIBRARY_PATH)/jdmainct.c \
+#        $(JPG_LIBRARY_PATH)/jdmarker.c \
+#        $(JPG_LIBRARY_PATH)/jdmaster.c \
+#        $(JPG_LIBRARY_PATH)/jdmerge.c \
+#        $(JPG_LIBRARY_PATH)/jdpostct.c \
+#        $(JPG_LIBRARY_PATH)/jdsample.c \
+#        $(JPG_LIBRARY_PATH)/jdtrans.c \
+#        $(JPG_LIBRARY_PATH)/jerror.c \
+#        $(JPG_LIBRARY_PATH)/jfdctflt.c \
+#        $(JPG_LIBRARY_PATH)/jfdctfst.c \
+#        $(JPG_LIBRARY_PATH)/jfdctint.c \
+#        $(JPG_LIBRARY_PATH)/jidctflt.c \
+#        $(JPG_LIBRARY_PATH)/jidctfst.S \
+#        $(JPG_LIBRARY_PATH)/jidctint.c \
+#        $(JPG_LIBRARY_PATH)/jquant1.c \
+#        $(JPG_LIBRARY_PATH)/jquant2.c \
+#        $(JPG_LIBRARY_PATH)/jutils.c \
+#        $(JPG_LIBRARY_PATH)/jmemmgr.c \
+#        $(JPG_LIBRARY_PATH)/jmem-android.c
 endif
 
 ifeq ($(SUPPORT_PNG),true)
