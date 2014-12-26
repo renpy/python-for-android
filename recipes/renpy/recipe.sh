@@ -32,7 +32,7 @@ function build_renpy() {
 
 	push_arm
 
-    CFLAGS="$CFLAGS -DANDROID -I$JNI_PATH/sdl2/include -I$JNI_PATH/sdl2_image -I$JNI_PATH/png -I$JNI_PATH/freetype/include"
+    CFLAGS="$CFLAGS -DANDROID -I$JNI_PATH/sdl2/include -I$JNI_PATH/sdl2_image -I$JNI_PATH/png -I$JNI_PATH/freetype/include -I$BUILD_PATH/libav-install/"
 	export CFLAGS="$CFLAGS"
 	export LDFLAGS="$LDFLAGS -L$LIBS_PATH -L$SRC_PATH/obj/local/$ARCH/ -lm -lz"
 	export LDSHARED="$LIBLINK"
