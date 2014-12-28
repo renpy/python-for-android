@@ -31,6 +31,8 @@ function build_libav() {
   echo $CFLAGS
   echo $LDFLAGS
 
+if [ ! -e Makefile ]; then
+
   try ./configure --prefix="$BUILD_PATH/libav-install" \
   --cc="$CC" \
   --ld="$CC" \
@@ -98,6 +100,8 @@ function build_libav() {
   --disable-vdpau \
   --disable-filters \
   --disable-bsfs # 2>&1 >/dev/null
+
+fi
 
   try make
   try make install
