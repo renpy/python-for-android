@@ -31,7 +31,7 @@ function build_libav() {
   echo $CFLAGS
   echo $LDFLAGS
 
-if [ ! -e Makefile ]; then
+if [ ! -e config.mak ]; then
 
   try ./configure --prefix="$BUILD_PATH/libav-install" \
   --cc="$CC" \
