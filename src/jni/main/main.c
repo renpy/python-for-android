@@ -242,6 +242,8 @@ done:
 
 	SDL_UpdateWindowSurface(window);
 
+	SDL_GL_MakeCurrent(NULL, NULL);
+
 	call_prepare_python();
 
 	return start_python();
