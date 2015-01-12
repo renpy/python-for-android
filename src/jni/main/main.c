@@ -193,22 +193,13 @@ int SDL_main(int argc, char **argv) {
 	SDL_Rect pos;
 	Uint32 pixel;
 
-	int display_width = 1024;
-	int display_height = 768;
-	SDL_DisplayMode mode;
-
 	if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
 		return 1;
 	}
 
 	IMG_Init(IMG_INIT_JPG|IMG_INIT_PNG);
 
-	if (SDL_GetCurrentDisplayMode(0, &mode) == 0) {
-		display_width = mode.w;
-		display_height = mode.h;
-	}
-
-	window = SDL_CreateWindow("pygame_sdl2 starting...", 0, 0, display_width, display_height, SDL_WINDOW_SHOWN);
+	window = SDL_CreateWindow("pygame_sdl2 starting...", 0, 0, 0, 0, SDL_WINDOW_SHOWN);
 	surface = SDL_GetWindowSurface(window);
 	pixel = SDL_MapRGB(surface->format, 128, 128, 128);
 
@@ -234,8 +225,8 @@ done:
 	SDL_FillRect(surface, NULL, pixel);
 
 	if (presplash) {
-		pos.x = (display_width - presplash->w) / 2;
-		pos.y = (display_height - presplash->h) / 2;
+		pos.x = (surface->w - presplash->w) / 2;
+		pos.y = (surface->h - presplash->h) / 2;
 		SDL_BlitSurface(presplash, NULL, surface, &pos);
 		SDL_FreeSurface(presplash);
 	}
