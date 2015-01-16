@@ -203,7 +203,12 @@ int SDL_main(int argc, char **argv) {
 	surface = SDL_GetWindowSurface(window);
 	pixel = SDL_MapRGB(surface->format, 128, 128, 128);
 
-	rwops = SDL_RWFromFile("android-presplash.jpg", "r");
+	rwops = SDL_RWFromFile("android-presplash.png", "r");
+
+	if (!rwops) {
+		rwops = SDL_RWFromFile("android-presplash.jpg", "r");
+	}
+
 	if (!rwops) goto done;
 
 	presplash = IMG_Load_RW(rwops, 1);
