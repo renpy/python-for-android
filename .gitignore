@@ -12,9 +12,10 @@ testsuite
 .packages
 
 #ECLIPSE + PYDEV
-.project
-.pydevproject
 .deps
 .optional-deps
 
 
+src/AndroidManifest.xml
+src/gen/
+src/project.properties
