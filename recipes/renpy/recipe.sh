@@ -2,7 +2,7 @@
 
 VERSION_renpy=6.19.0
 URL_renpy=
-DEPS_renpy=(pygame_sdl2 sdl python)
+DEPS_renpy=(pygame_sdl2 sdl python fribidi)
 MD5_renpy=
 BUILD_renpy=$BUILD_PATH/renpy/
 RECIPE_renpy=$RECIPES_PATH/renpy
@@ -26,24 +26,20 @@ function prebuild_renpy() {
 
 function build_renpy() {
 
-  set -x
+    try cd "$RENPYROOT/module"
 
-			# try cd "$RENPYROOT"
-	# ./run.sh the_question compile
-	try cd "$RENPYROOT/module"
+    push_arm
 
-	push_arm
-
-    CFLAGS="$CFLAGS -DANDROID -I$JNI_PATH/sdl2/include -I$JNI_PATH/sdl2_image -I$JNI_PATH/png -I$JNI_PATH/freetype/include -I$BUILD_PATH/libav-install/include"
-	export CFLAGS="$CFLAGS"
-	export LDFLAGS="$LDFLAGS -L$LIBS_PATH -L$SRC_PATH/obj/local/$ARCH/ -lm -lz"
-	export LDSHARED="$LIBLINK"
+    CFLAGS="$CFLAGS -DANDROID -I$JNI_PATH/sdl2/include -I$JNI_PATH/sdl2_image -I$JNI_PATH/png -I$JNI_PATH/freetype/include -I$BUILD_PATH/libav-install/include -I$BUILD_PATH/fribidi-install/include"
+    export CFLAGS="$CFLAGS"
+    export LDFLAGS="$LDFLAGS -L$LIBS_PATH -L$SRC_PATH/obj/local/$ARCH/ -lm -lz"
+    export LDSHARED="$LIBLINK"
     try $BUILD_PATH/python-install/bin/python.host setup.py clean -b build/lib.android -t build/tmp.android
     try $BUILD_PATH/python-install/bin/python.host setup.py build_ext -b build/lib.android -t build/tmp.android
 
     unset LDSHARED
 
-	pop_arm
+    pop_arm
 
     #site-packages
     SP="$BUILD_PATH/python-install/lib/python2.7/site-packages"
@@ -60,13 +56,13 @@ function build_renpy() {
 
   # try rm -Rf "$SP/renpy/common"
 
-  strip_renpy "$SP/renpy"
-	strip_renpy "$SP/renpy"
-	strip_renpy "$SP/renpy/display"
-	strip_renpy "$SP/renpy/audio"
-	strip_renpy "$SP/renpy/tools"
-	strip_renpy "$SP/renpy/gl"
-	strip_renpy "$SP/renpy/text"
+    strip_renpy "$SP/renpy"
+    strip_renpy "$SP/renpy"
+    strip_renpy "$SP/renpy/display"
+    strip_renpy "$SP/renpy/audio"
+    strip_renpy "$SP/renpy/tools"
+    strip_renpy "$SP/renpy/gl"
+    strip_renpy "$SP/renpy/text"
 
 }
 
