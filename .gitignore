@@ -19,3 +19,4 @@ testsuite
 src/AndroidManifest.xml
 src/gen/
 src/project.properties
+src/bin/
