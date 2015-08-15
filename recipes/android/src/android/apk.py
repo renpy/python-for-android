@@ -14,6 +14,13 @@ class SubFile(object):
         self.name = name
         self.f.seek(self.base)
 
+    def __enter__(self):
+        return self
+
+    def __exit__(self, _type, value, tb):
+        self.close()
+        return False
+
     def read(self, length=None):
 
         maxlength = self.length - self.offset
@@ -24,7 +31,7 @@ class SubFile(object):
             length = maxlength
 
         if length:
-            rv2 = self.f.read(length)        
+            rv2 = self.f.read(length)
             self.offset += len(rv2)
         else:
             rv2 = ""
@@ -76,7 +83,7 @@ class SubFile(object):
             raise StopIteration()
 
         return rv
-    
+
     def flush(self):
         return
 
@@ -93,10 +100,10 @@ class SubFile(object):
             offset = self.length
 
         self.offset = offset
-            
+
         if offset < 0:
             offset = 0
-            
+
         self.f.seek(offset + self.base)
 
     def tell(self):
@@ -111,15 +118,15 @@ class SubFile(object):
 
 
 class APK(object):
-    
+
     def __init__(self, apk=None, prefix="assets/"):
         """
         Opens an apk file, and lets you read the assets out of it.
-        
+
         `apk`
             The path to the file to open. If this is None, it defaults to the
             apk file we are run out of.
-            
+
         `prefix`
             The prefix inside the apk file to read.
         """
@@ -127,48 +134,48 @@ class APK(object):
         if apk is None:
             apk = os.environ["ANDROID_APK"]
             print "Opening APK %r" % apk
-            
+
         self.apk = apk
-        
+
         self.zf = zipfile.ZipFile(apk, "r")
 
         # A map from unprefixed filename to ZipInfo object.
         self.info = { }
-        
+
         for i in self.zf.infolist():
             fn = i.filename
             if not fn.startswith(prefix):
                 continue
-            
+
             fn = fn[len(prefix):]
-            
+
             self.info[fn] = i
-            
+
     def list(self):
         return sorted(self.info)
-                
+
     def open(self, fn):
-        
+
         if fn not in self.info:
             raise IOError("{0} not found in apk.".format(fn))
-            
+
         info = self.info[fn]
 
         if info.compress_type == zipfile.ZIP_STORED:
-            
+
             f = file(self.apk, "rb")
             f.seek(info.header_offset)
-            
+
             h = struct.unpack(zipfile.structFileHeader, f.read(zipfile.sizeFileHeader))
-            
-            offset = (info.header_offset + 
+
+            offset = (info.header_offset +
                 zipfile.sizeFileHeader +
                 h[zipfile._FH_FILENAME_LENGTH] +
                 h[zipfile._FH_EXTRA_FIELD_LENGTH])
-            
+
             return SubFile(
                 f,
-                self.apk, 
+                self.apk,
                 offset,
                 info.file_size)
 
