@@ -248,7 +248,7 @@ typedef uint64_t Uint64;
 #define SDL_PRINTF_FORMAT_STRING
 #define SDL_SCANF_FORMAT_STRING
 #endif
-#if defined(__GNUC__)
+#if 0 && defined(__GNUC__)
 #define SDL_PRINTF_VARARG_FUNC( fmtargnumber ) __attribute__ (( format( __printf__, fmtargnumber, fmtargnumber+1 )))
 #define SDL_SCANF_VARARG_FUNC( fmtargnumber ) __attribute__ (( format( __scanf__, fmtargnumber, fmtargnumber+1 )))
 #else
