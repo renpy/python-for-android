@@ -4,9 +4,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <string.h>
 #include <jni.h>
 #include "android/log.h"
 #include "jniwrapperstuff.h"
+
+extern char **environ;
+
+/**
+ * This is true if the environment is malfunctioning and we need to work
+ * around that.
+ */
+static int environ_workaround = 0;
+
 
 SDL_Window *window = NULL;
 
@@ -55,14 +65,18 @@ int file_exists(const char * filename) {
     return 0;
 }
 
-
 int start_python(void) {
     char *env_argument = NULL;
     int ret = 0;
     FILE *fd;
-    char *args[] = { "python", NULL };
 
-    LOG("Initialize Python for Android");
+
+    /* The / is required to stop python from doing a search that causes
+     * a crash on ARC.
+     */
+    char *args[] = { "/python", NULL };
+
+	LOG("Initialize Python for Android");
 
     env_argument = getenv("ANDROID_ARGUMENT");
     setenv("ANDROID_APP_PATH", env_argument, 1);
@@ -76,7 +90,7 @@ int start_python(void) {
      */
     PyEval_InitThreads();
 
-    /* our logging module for android
+	/* our logging module for android
      */
     initandroidembed();
 
@@ -86,8 +100,8 @@ int start_python(void) {
     PyRun_SimpleString(
         "import sys, posix\n" \
         "private = posix.environ['ANDROID_PRIVATE']\n" \
-        "argument = posix.environ['ANDROID_ARGUMENT']\n" \
-        "sys.path[:] = [ \n" \
+		"argument = posix.environ['ANDROID_ARGUMENT']\n" \
+		"sys.path[:] = [ \n" \
 		"    argument, \n" \
 		"    private + '/lib/python27.zip', \n" \
 		"    private + '/lib/python2.7/', \n" \
@@ -164,6 +178,18 @@ int start_python(void) {
 }
 
 
+void init_environ() {
+	setenv("TEST_ENV_VAR", "The test worked.", 1);
+
+	if (*environ) {
+		return;
+	}
+
+	environ_workaround = 1;
+	environ = calloc(50, sizeof(char *));
+}
+
+
 JNIEXPORT void JNICALL JAVA_EXPORT_NAME(PythonSDLActivity_nativeSetEnv) (
 		JNIEnv*  env, jobject thiz,
 		jstring variable,
@@ -172,7 +198,20 @@ JNIEXPORT void JNICALL JAVA_EXPORT_NAME(PythonSDLActivity_nativeSetEnv) (
 	jboolean iscopy;
     const char *c_variable = (*env)->GetStringUTFChars(env, variable, &iscopy);
     const char *c_value  = (*env)->GetStringUTFChars(env, value, &iscopy);
+    const char buf[2048];
+    char **e = environ;
+
     setenv(c_variable, c_value, 1);
+
+    if (environ_workaround) {
+    	snprintf(buf, 2048, "%s=%s", c_variable, c_value);
+
+    	while (*e) {
+    		e++;
+    	}
+
+    	*e = strdup(buf);
+    }
 }
 
 void call_prepare_python(void) {
@@ -192,6 +231,8 @@ int SDL_main(int argc, char **argv) {
 	SDL_Surface *presplash2 = NULL;
 	SDL_Rect pos;
 	Uint32 pixel;
+
+	init_environ();
 
 	if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
 		return 1;
