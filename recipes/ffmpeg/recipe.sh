@@ -1,51 +1,109 @@
 #!/bin/bash
-# Recent change made ffmpeg not compatible with python-for-android yet.
-# Only h264+aac build are working.
 
-VERSION_ffmpeg=${VERSION_ffmpeg:-master}
-URL_ffmpeg=https://github.com/tito/ffmpeg-android/archive/$VERSION_ffmpeg.zip
-DEPS_ffmpeg=(python sdl)
+VERSION_ffmpeg=
+URL_ffmpeg=
+DEPS_ffmpeg=()
 MD5_ffmpeg=
-BUILD_ffmpeg=$BUILD_PATH/ffmpeg/$(get_directory $URL_ffmpeg)
+BUILD_ffmpeg=$BUILD_PATH/ffmpeg/ffmpeg
 RECIPE_ffmpeg=$RECIPES_PATH/ffmpeg
 
 function prebuild_ffmpeg() {
-	cd $BUILD_ffmpeg
-	if [ ! -d ffmpeg ]; then
-		try ./extract.sh
-	fi
+  cd $BUILD_PATH/ffmpeg
+
+  # rm -rf ffmpeg
+  if [ ! -d ffmpeg ]; then
+    try tar xf $RECIPE_ffmpeg/ffmpeg-2.8.5.tar.gz
+    try mv ffmpeg-2.8.5 ffmpeg
+  fi
 }
 
 function shouldbuild_ffmpeg() {
-	if [ -d "$SITEPACKAGES_PATH/ffmpeg" ]; then
-		DO_BUILD=0
-	fi
+    true
 }
 
 function build_ffmpeg() {
-	cd $BUILD_ffmpeg
+  cd $BUILD_ffmpeg
 
-	# build ffmpeg
-	export NDK=$ANDROIDNDK
-	push_arm
+  push_arm
 
-	if [ ! -f $BUILD_ffmpeg/build/ffmpeg/armeabi-v7a/lib/libavcodec.a ]; then
-		try env FFMPEG_ARCHS='armv7a' ./build-h264-aac.sh
-	fi
+  echo $CC
+  echo $LD
+  echo $CFLAGS
+  echo $LDFLAGS
 
-	# build python extension
-	export JNI_PATH=$JNI_PATH
-	export CFLAGS="$CFLAGS -I$JNI_PATH/sdl/include -I$JNI_PATH/sdl_mixer/"
-	export LDFLAGS="$LDFLAGS -lm -L$LIBS_PATH"
-	export FFMPEG_ROOT="$BUILD_ffmpeg/build/ffmpeg/armeabi-v7a"
-	try cd $BUILD_ffmpeg/python
-	try find . -iname '*.pyx' -exec $CYTHON {} \;
-	try $HOSTPYTHON setup.py build_ext -v
-	try $HOSTPYTHON setup.py install -O2
+if [ ! -e config.mak ]; then
 
-	pop_arm
+  try ./configure --prefix="$BUILD_PATH/ffmpeg-install" \
+  --cc="$CC" \
+  --ld="$CC" \
+  --target-os=android \
+  --arch=arm \
+  --cpu=armv6 \
+  --enable-avresample \
+  --extra-cflags="$CFLAGS" \
+  --extra-ldflags="$LDFLAGS" \
+  --extra-ldexeflags=-pie \
+  --enable-cross-compile \
+  --disable-shared \
+  --enable-static \
+  --enable-memalign-hack \
+  --enable-runtime-cpudetect \
+  --disable-encoders \
+  --disable-muxers \
+  --disable-bzlib \
+  --disable-demuxers \
+  --enable-demuxer=au \
+  --enable-demuxer=avi \
+  --enable-demuxer=flac \
+  --enable-demuxer=m4v \
+  --enable-demuxer=matroska \
+  --enable-demuxer=mov \
+  --enable-demuxer=mp3 \
+  --enable-demuxer=mpegps \
+  --enable-demuxer=mpegts \
+  --enable-demuxer=mpegtsraw \
+  --enable-demuxer=mpegvideo \
+  --enable-demuxer=ogg \
+  --enable-demuxer=wav \
+  --disable-decoders \
+  --enable-decoder=flac \
+  --enable-decoder=mp2 \
+  --enable-decoder=mp3 \
+  --enable-decoder=mp3on4 \
+  --enable-decoder=pcm_dvd \
+  --enable-decoder=pcm_s16be \
+  --enable-decoder=pcm_s16le \
+  --enable-decoder=pcm_s8 \
+  --enable-decoder=pcm_u16be \
+  --enable-decoder=pcm_u16le \
+  --enable-decoder=pcm_u8 \
+  --enable-decoder=vorbis \
+  --enable-decoder=opus \
+  --disable-parsers \
+  --enable-parser=mpegaudio \
+  --disable-protocols \
+  --enable-protocol=file \
+  --disable-devices \
+  --disable-vdpau \
+  --disable-filters \
+  --disable-programs \
+  --disable-bsfs # 2>&1 >/dev/null
+
+fi
+
+  try make
+  try make install
+
+  set -x
+
+  try pushd "$BUILD_PATH/ffmpeg-install/lib"
+  try ranlib libswresample.a
+  try cp -a libavcodec.a libavformat.a libavresample.a libavutil.a libswscale.a libswresample.a "$LIBS_PATH/"
+  try popd
+
+  pop_arm
 }
 
 function postbuild_ffmpeg() {
-	true
+  true
 }

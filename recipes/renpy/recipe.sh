@@ -2,7 +2,7 @@
 
 VERSION_renpy=6.19.0
 URL_renpy=
-DEPS_renpy=(pygame_sdl2 sdl python fribidi)
+DEPS_renpy=(pygame_sdl2 sdl python fribidi ffmpeg)
 MD5_renpy=
 BUILD_renpy=$BUILD_PATH/renpy/
 RECIPE_renpy=$RECIPES_PATH/renpy
@@ -30,7 +30,7 @@ function build_renpy() {
 
     push_arm
 
-    CFLAGS="$CFLAGS -DANDROID -I$JNI_PATH/sdl2/include -I$JNI_PATH/sdl2_image -I$JNI_PATH/png -I$JNI_PATH/freetype/include -I$BUILD_PATH/libav-install/include -I$BUILD_PATH/fribidi-install/include"
+    CFLAGS="$CFLAGS -DANDROID -I$JNI_PATH/sdl2/include -I$JNI_PATH/sdl2_image -I$JNI_PATH/png -I$JNI_PATH/freetype/include -I$BUILD_PATH/ffmpeg-install/include -I$BUILD_PATH/fribidi-install/include"
     export CFLAGS="$CFLAGS"
     export LDFLAGS="$LDFLAGS -L$LIBS_PATH -L$SRC_PATH/obj/local/$ARCH/ -lm -lz"
     export LDSHARED="$LIBLINK"

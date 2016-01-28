@@ -39,7 +39,6 @@ while args:
     if a not in unique_args:
         unique_args.insert(0, a)
 
-
 print('Biglink create %s library' % sys.argv[1])
 print('Biglink arguments:')
 for arg in unique_args:
@@ -49,4 +48,6 @@ args = os.environ['CC'].split() + \
     ['-shared', '-O3', '-o', sys.argv[1]] + \
     unique_args
 
-sys.exit(subprocess.call(args))
+rv = subprocess.call(args)
+sys.exit(rv)
+
