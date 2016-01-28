@@ -74,7 +74,10 @@ int start_python(void) {
     /* The / is required to stop python from doing a search that causes
      * a crash on ARC.
      */
-    char *args[] = { "/python", NULL };
+    char python[2048];
+    snprintf(python, 2048, "%s/python", getenv("ANDROID_PRIVATE"));
+
+    char *args[] = { python, NULL };
 
 	LOG("Initialize Python for Android");
 
@@ -99,7 +102,7 @@ int start_python(void) {
      */
     PyRun_SimpleString(
         "import sys, posix\n" \
-        "private = posix.environ['ANDROID_PRIVATE']\n" \
+		"private = posix.environ['ANDROID_PRIVATE']\n" \
 		"argument = posix.environ['ANDROID_ARGUMENT']\n" \
 		"sys.path[:] = [ \n" \
 		"    argument, \n" \
