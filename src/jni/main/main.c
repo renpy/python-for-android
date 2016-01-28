@@ -70,19 +70,18 @@ int start_python(void) {
     int ret = 0;
     FILE *fd;
 
+    env_argument = getenv("ANDROID_ARGUMENT");
+    setenv("ANDROID_APP_PATH", env_argument, 1);
 
     /* The / is required to stop python from doing a search that causes
      * a crash on ARC.
      */
     char python[2048];
-    snprintf(python, 2048, "%s/python", getenv("ANDROID_PRIVATE"));
+    snprintf(python, 2048, "%s/python", env_argument);
 
     char *args[] = { python, NULL };
 
 	LOG("Initialize Python for Android");
-
-    env_argument = getenv("ANDROID_ARGUMENT");
-    setenv("ANDROID_APP_PATH", env_argument, 1);
 
     //setenv("PYTHONVERBOSE", "2", 1);
     Py_SetProgramName(args[0]);
