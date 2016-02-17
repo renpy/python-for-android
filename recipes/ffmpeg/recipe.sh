@@ -12,8 +12,8 @@ function prebuild_ffmpeg() {
 
   # rm -rf ffmpeg
   if [ ! -d ffmpeg ]; then
-    try tar xf $RECIPE_ffmpeg/ffmpeg-2.8.5.tar.gz
-    try mv ffmpeg-2.8.5 ffmpeg
+    try tar xf $RECIPE_ffmpeg/ffmpeg-3.0.tar.bz2
+    try mv ffmpeg-3.0 ffmpeg
   fi
 }
 
