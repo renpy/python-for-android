@@ -45,14 +45,8 @@ function build_renpy() {
     SP="$BUILD_PATH/python-install/lib/python2.7/site-packages"
     B="$RENPYROOT/module/build/lib.android"
 
-    try python -O -m compileall "$RENPYROOT/module/pysdlsound"
-
     # try cp -a "$RENPYROOT/renpy" "$SP"
     try cp -a "$B"/* "$SP"
-    try cp "$RENPYROOT/module/pysdlsound/__init__.pyo" "$SP/pysdlsound"
-
-    echo $SP/pysdlsound
-    ls $SP/pysdlsound
 
   # try rm -Rf "$SP/renpy/common"
 
