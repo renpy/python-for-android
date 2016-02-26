@@ -100,7 +100,8 @@ if [ ! -e config.mak ]; then
        --disable-vda \
        --disable-filters \
        --disable-bsfs \
-       --disable-stripping
+       --disable-stripping \
+       --disable-iconv
 
 fi
 
